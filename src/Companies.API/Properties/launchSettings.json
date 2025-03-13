@@ -1,0 +1,34 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5147",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CORECLR_ENABLE_PROFILING": "1",
+        "CORECLR_PROFILER": "{846F5F1C-F9AE-4B07-969E-05C26BC060D8}",
+        "CORECLR_PROFILER_PATH": "/d/Github/dotnet/dotnet-observability-datadog/src/Companies.API/bin/Debug/net9.0/datadog/win-x64/Datadog.Trace.ClrProfiler.Native.dll",
+        "DD_ENV": "development",
+        "DD_SERVICE": "companies-api",
+        "DD_VERSION": "1.0.0",
+        "DD_TRACE_ENABLED": "true",
+        "DD_LOGS_INJECTION": "true",
+        "DD_AGENT_HOST": "localhost",
+        "DD_TRACE_AGENT_PORT": "8126",
+        "DD_DOTNET_TRACER_HOME": "/d/Github/dotnet/dotnet-observability-datadog/src/Companies.API/bin/Debug/net9.0/datadog"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7213;http://localhost:5147",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

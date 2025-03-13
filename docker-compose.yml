@@ -1,0 +1,45 @@
+services:
+  companies-api:
+    container_name: companies-api
+    image: companies-api
+    build:
+      context: .
+      dockerfile: src/Companies.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DD_ENV=development
+      - DD_SERVICE=companies-api
+      - DD_VERSION=2.0.0
+      - DD_TRACE_ENABLED=true
+      - DD_LOGS_INJECTION=true
+      - DD_AGENT_HOST=host.docker.internal
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_TRACE_DEBUG=true
+    ports:
+      - 5147:8080
+
+  dogstatsd:
+    image: datadog/dogstatsd:latest
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+    ports:
+      - "8125:8125/udp"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+
+  datadog:
+    image: datadog/agent:latest
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=datadoghq.com
+      - DD_APM_ENABLED=true
+      - DD_LOGS_ENABLED=true
+    ports:
+      - "8126:8126"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro

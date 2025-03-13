@@ -1,0 +1,14 @@
+@hostUrl = http://localhost:5147
+
+POST {{hostUrl}}/companies
+Content-Type: application/json
+Accept: application/json
+Correlation-Id: 123e4567-e89b-12d3-a456-426614174000
+
+{
+    "name": "Company Test",
+    "country": "Brasil",
+    "email": "company@email.com"
+}
+
+###
