@@ -4,12 +4,7 @@ namespace Companies.API.Extensions;
 
 public static class DatadogExtensions
 {
-    public static void AddDatadog(this IServiceCollection services)
-    {
-        ConfigureDatadogMetrics();
-    }
-
-    private static void ConfigureDatadogMetrics()
+    public static void ConfigureDatadog(this IServiceCollection services)
     {
         var dogstatsdConfig = new StatsdConfig
         {
