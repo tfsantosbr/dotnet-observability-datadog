@@ -1,0 +1,7 @@
+logs:
+  - type: file
+    path: /app/logs/logs.json
+    service: companies-api
+    source: csharp
+    sourcecategory: sourcecode
+    format: json

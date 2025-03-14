@@ -7,6 +7,7 @@ services:
       dockerfile: src/Companies.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - LogFilePath=/app/logs/logs.json
       - DD_ENV=development
       - DD_SERVICE=companies-api
       - DD_VERSION=2.0.0
@@ -16,6 +17,8 @@ services:
       - DD_TRACE_AGENT_PORT=8126
     ports:
       - 5147:8080
+    volumes:
+      - ./logs:/app/logs
 
   dogstatsd:
     image: datadog/dogstatsd:latest
@@ -42,3 +45,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - ./config/datadog:/conf.d/
+      - ./logs:/app/logs

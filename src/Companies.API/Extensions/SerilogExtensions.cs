@@ -5,13 +5,15 @@ namespace Companies.API.Extensions;
 
 public static class SerilogExtensions
 {
-    public static void ConfigureSerilog(this IServiceCollection services)
+    public static void ConfigureSerilog(this IServiceCollection services, IConfiguration configuration)
     {
+        var logFilePath = configuration["LogFilePath"]!;
+
         services.AddSerilog((services, lc) => lc
             .ReadFrom.Services(services)
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.File(new JsonFormatter(renderMessage: true), "log.json")
+            .WriteTo.File(new JsonFormatter(renderMessage: true), logFilePath)
         );
     }
 }

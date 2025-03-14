@@ -2,10 +2,11 @@ using Companies.API.Endpoints;
 using Companies.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddOpenApi();
 builder.Services.ConfigureDatadog();
-builder.Services.ConfigureSerilog();
+builder.Services.ConfigureSerilog(configuration);
 
 var app = builder.Build();
 
