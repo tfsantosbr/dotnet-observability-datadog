@@ -1,21 +1,20 @@
 using Companies.API.Constants;
 
-namespace Companies.API.Middleware
+namespace Companies.API.Middlewares;
+
+public class CorrelationMiddleware(RequestDelegate next)
 {
-    public class CorrelationMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
     {
-        public async Task InvokeAsync(HttpContext context)
-        {
-            var correlationId = context.Request.Headers[CorrelationConstants.CORRELATION_HEADER].FirstOrDefault();
+        var correlationId = context.Request.Headers[CorrelationConstants.CORRELATION_HEADER].FirstOrDefault();
 
-            if (correlationId is null)
-                await next(context);
-
-            context.Items[CorrelationConstants.CORRELATION_HEADER] = correlationId;
-
-            context.Response.Headers[CorrelationConstants.CORRELATION_HEADER] = correlationId;
-
+        if (correlationId is null)
             await next(context);
-        }
+
+        context.Items[CorrelationConstants.CORRELATION_HEADER] = correlationId;
+
+        context.Response.Headers[CorrelationConstants.CORRELATION_HEADER] = correlationId;
+
+        await next(context);
     }
 }

@@ -1,6 +1,6 @@
 using Companies.API.Endpoints;
 using Companies.API.Extensions;
-using Companies.API.Middleware;
+using Companies.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
