@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddOpenApi();
+builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureDatadog();
 builder.Services.ConfigureSerilog(configuration);
 
@@ -17,9 +18,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<CorrelationIdMiddleware>();
-app.UseMiddleware<CorrelationLoggingMiddleware>();
-//app.UseMiddleware<DatadogTracingMiddleware>();
+app.UseMiddleware<CorrelationMiddleware>();
 
 app.MapCompanyEndpoints();
 
