@@ -11,10 +11,11 @@ services:
       - DD_ENV=development
       - DD_SERVICE=companies-api
       - DD_VERSION=2.0.0
-      - DD_TRACE_ENABLED=true
-      - DD_LOGS_INJECTION=true
       - DD_AGENT_HOST=host.docker.internal
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ENABLED=true
       - DD_TRACE_AGENT_PORT=8126
+      - DD_TRACE_HEADER_TAGS=Correlation-Id:correlation_id
     ports:
       - 5147:8080
     volumes:

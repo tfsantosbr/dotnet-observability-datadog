@@ -1,5 +1,6 @@
 using Companies.API.Endpoints;
 using Companies.API.Extensions;
+using Companies.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -16,7 +17,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<CorrelationLoggingMiddleware>();
 //app.UseMiddleware<DatadogTracingMiddleware>();
 
 app.MapCompanyEndpoints();

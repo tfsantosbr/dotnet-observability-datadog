@@ -1,18 +1,19 @@
 using StatsdClient;
 
-namespace Companies.API.Extensions;
-
-public static class DatadogExtensions
+namespace Companies.API.Extensions
 {
-    public static void ConfigureDatadog(this IServiceCollection services)
+    public static class DatadogExtensions
     {
-        var dogstatsdConfig = new StatsdConfig
+        public static void ConfigureDatadog(this IServiceCollection services)
         {
-            StatsdServerName = "host.docker.internal",
-            StatsdPort = 8125,
-            Prefix = "companies.api.metrics"
-        };
+            var dogstatsdConfig = new StatsdConfig
+            {
+                StatsdServerName = "host.docker.internal",
+                StatsdPort = 8125,
+                Prefix = "companies.api.metrics"
+            };
 
-        DogStatsd.Configure(dogstatsdConfig);
+            DogStatsd.Configure(dogstatsdConfig);
+        }
     }
 }

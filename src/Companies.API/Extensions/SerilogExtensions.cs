@@ -1,19 +1,20 @@
 using Serilog;
 using Serilog.Formatting.Json;
 
-namespace Companies.API.Extensions;
-
-public static class SerilogExtensions
+namespace Companies.API.Extensions
 {
-    public static void ConfigureSerilog(this IServiceCollection services, IConfiguration configuration)
+    public static class SerilogExtensions
     {
-        var logFilePath = configuration["LogFilePath"]!;
+        public static void ConfigureSerilog(this IServiceCollection services, IConfiguration configuration)
+        {
+            var logFilePath = configuration["LogFilePath"]!;
 
-        services.AddSerilog((services, lc) => lc
-            .ReadFrom.Services(services)
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File(new JsonFormatter(renderMessage: true), logFilePath)
-        );
+            services.AddSerilog((services, lc) => lc
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(new JsonFormatter(renderMessage: true), logFilePath)
+            );
+        }
     }
 }
