@@ -1,7 +1,13 @@
 logs:
   - type: file
-    path: /app/logs/logs.json
+    path: /app/logs/companies-api-logs.json
     service: companies-api
+    source: csharp
+    sourcecategory: sourcecode
+    format: json
+  - type: file
+    path: /app/logs/companies-importer-logs.json
+    service: companies-importer
     source: csharp
     sourcecategory: sourcecode
     format: json

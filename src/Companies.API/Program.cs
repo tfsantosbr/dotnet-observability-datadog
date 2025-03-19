@@ -7,7 +7,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
-builder.Services.ConfigureDatadog();
+builder.Services.ConfigureDatadog(configuration);
 builder.Services.ConfigureSerilog(configuration);
 
 var app = builder.Build();

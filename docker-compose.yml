@@ -7,10 +7,10 @@ services:
       dockerfile: src/Companies.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - LogFilePath=/app/logs/logs.json
+      - LogFilePath=/app/logs/companies-api-logs.json
       - DD_ENV=development
       - DD_SERVICE=companies-api
-      - DD_VERSION=2.0.0
+      - DD_VERSION=1.0.0
       - DD_AGENT_HOST=host.docker.internal
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ENABLED=true
@@ -20,6 +20,28 @@ services:
       - 5147:8080
     volumes:
       - ./logs:/app/logs
+
+  companies-importer:
+    container_name: companies-importer
+    image: companies-importer
+    build:
+      context: .
+      dockerfile: src/Companies.Importer/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - LogFilePath=/app/logs/companies-importer-logs.json
+      - DD_ENV=development
+      - DD_SERVICE=companies-importer
+      - DD_VERSION=1.0.0
+      - DD_AGENT_HOST=host.docker.internal
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_ENABLED=true
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_TRACE_HEADER_TAGS=Correlation-Id:CorrelationId
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - servicebus
 
   dogstatsd:
     image: datadog/dogstatsd:latest
@@ -48,3 +70,22 @@ services:
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
       - ./config/datadog:/conf.d/
       - ./logs:/app/logs
+
+  servicebus:
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    volumes:
+      - "./config/servicebus/config.json:/ServiceBus_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5672:5672"
+    environment:
+      SQL_SERVER: sqledge
+      MSSQL_SA_PASSWORD: ${MSSQL_PASSWORD}
+      ACCEPT_EULA: "Y"
+    depends_on:
+      - sqledge
+
+  sqledge:
+    image: "mcr.microsoft.com/azure-sql-edge:latest"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_PASSWORD}

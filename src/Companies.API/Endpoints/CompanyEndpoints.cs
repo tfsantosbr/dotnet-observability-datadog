@@ -1,6 +1,4 @@
 using Companies.API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using StatsdClient;
 
 namespace Companies.API.Endpoints
