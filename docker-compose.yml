@@ -30,7 +30,7 @@ services:
       context: .
       dockerfile: src/Companies.Importer/Dockerfile
     environment:
-      - DOTNETCORE_ENVIRONMENT=Development
+      - DOTNET_ENVIRONMENT=Development
       - LogFilePath=/app/logs/companies-importer-logs.json
       - DD_ENV=development
       - DD_SERVICE=companies-importer
