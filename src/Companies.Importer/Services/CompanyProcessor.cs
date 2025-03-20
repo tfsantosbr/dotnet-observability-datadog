@@ -10,26 +10,27 @@ public class CompanyProcessor(HttpClient httpClient, ILogger<CompanyProcessor> l
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    public async Task ProcessMessageAsync(CompanyMessage[] companies)
+    public async Task ProcessCompaniesAsync(
+        CompanyMessage[] companies, string correlationId, CancellationToken cancellationToken = default)
     {
         foreach (var company in companies)
         {
-            var requestUrl = "companies";
+            logger.LogInformation("Processing company '{@Company}'", company);
 
-            var companyJson = JsonSerializer.Serialize(company, jsonSerializerOptions);
-
-            using var request = new HttpRequestMessage(HttpMethod.Post, requestUrl)
+            using var request = new HttpRequestMessage(HttpMethod.Post, "companies")
             {
-                Content = new StringContent(companyJson, Encoding.UTF8, "application/json")
+                Content = new StringContent(
+                    content: JsonSerializer.Serialize(company, jsonSerializerOptions),
+                    encoding: Encoding.UTF8,
+                    mediaType: "application/json")
             };
 
-            // TODO add correlation Id
-            //request.Headers.Add("Correlation-Id", "123e4567-e89b-12d3-a456-426614174000");
+            request.Headers.Add("Correlation-Id", correlationId);
 
-            var response = await httpClient.SendAsync(request);
+            var response = await httpClient.SendAsync(request, cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            logger.LogInformation("Company '{@ProcessedCompany}' processed with success!", company);
+            logger.LogInformation("Company '{@Company}' processed with success!", company);
         }
     }
 }

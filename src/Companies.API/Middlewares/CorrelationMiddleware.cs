@@ -1,4 +1,5 @@
 using Companies.API.Constants;
+using Serilog.Context;
 
 namespace Companies.API.Middlewares;
 

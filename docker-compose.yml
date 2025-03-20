@@ -15,11 +15,13 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ENABLED=true
       - DD_TRACE_AGENT_PORT=8126
-      - DD_TRACE_HEADER_TAGS=Correlation-Id:CorrelationId
+      - DD_TRACE_HEADER_TAGS=Correlation-Id:correlation_id
     ports:
       - 5147:8080
     volumes:
       - ./logs:/app/logs
+    depends_on:
+      - servicebus
 
   companies-importer:
     container_name: companies-importer
@@ -28,7 +30,7 @@ services:
       context: .
       dockerfile: src/Companies.Importer/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNETCORE_ENVIRONMENT=Development
       - LogFilePath=/app/logs/companies-importer-logs.json
       - DD_ENV=development
       - DD_SERVICE=companies-importer
@@ -37,7 +39,7 @@ services:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ENABLED=true
       - DD_TRACE_AGENT_PORT=8126
-      - DD_TRACE_HEADER_TAGS=Correlation-Id:CorrelationId
+      - DD_TRACE_HEADER_TAGS=Correlation-Id:correlation_id
     volumes:
       - ./logs:/app/logs
     depends_on:

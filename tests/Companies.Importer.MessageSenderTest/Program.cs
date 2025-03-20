@@ -16,10 +16,13 @@ var companyMessages = new[]
 
 var jsonMessage = JsonSerializer.Serialize(companyMessages);
 
-var message = new ServiceBusMessage(jsonMessage);
+var message = new ServiceBusMessage(jsonMessage)
+{
+    CorrelationId = Guid.NewGuid().ToString()
+};
 
 await sender.SendMessageAsync(message);
 
-Console.WriteLine("Mensagem '{0}' enviada com sucesso!", jsonMessage);
+Console.WriteLine("Mensagem enviada com sucesso. Correlation Id: '{0}'", message.CorrelationId);
 
 record CompanyMessage(string Name, string Country, string Email);
